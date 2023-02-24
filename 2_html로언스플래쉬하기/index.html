@@ -16,20 +16,33 @@
     }
 
     .imageDisplayWrapper {
+        display: flex;
+        flex-direction: column;
         margin-top: 25px;
+        height: 500px;
+        width: 90%;
+        padding: 10px;
+        border: 1px solid black;
     }
 
     .imageToDisplay {
-        width: 100%;
-        /* height: 350px; */
-        border: 1px solid black;
+        height: 500px;
         object-fit: cover;
+    }
+
+    .action-btn {
+        padding: 10px;
+        color: darkslategray;
+        border: 1px solid black;
+        border-radius: 5px;
+        background-color: #f9f8f8;
+        cursor: pointer;
     }
 </style>
 
 <body>
     <div class="controlWrapper">
-        <button class="getImagesButton" id="이미지버튼">이미지 가져오기</button>
+        <button class="action-btn" id="action-getImageBtn" onclick="getImagesButton()">이미지 가져오기</button>
     </div>
     <div class="imageDisplayWrapper">
         <img class="imageToDisplay" />
@@ -39,13 +52,12 @@
         const access_key = 'ou5z2oKLNMy9ZTdIAcEUP4Uu44gYFsh1_1CnLEM8qjY'
         const requestUrl =
           'https://api.unsplash.com/search/photos?query=london&client_id=' + access_key;
-        const getImagesButton = document.querySelector('#이미지버튼');
         const imageToDisplay = document.querySelector('.imageToDisplay');
 
-        getImagesButton.addEventListener('click', async () => {
-            let randomImage = await getNewImage();
-            imageToDisplay.src = randomImage;
-        });
+        async function getImagesButton() {
+          let randomImage = await getNewImage();
+          imageToDisplay.src = randomImage;
+        }
 
         async function getNewImage() {
           let randomNumber = Math.floor(Math.random() * 10);
