@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: #f9f8f8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .imageDisplayWrapper {
+        margin-top: 25px;
+    }
+
+    .imageToDisplay {
+        width: 100%;
+        /* height: 350px; */
+        border: 1px solid black;
+        object-fit: cover;
+    }
+</style>
+
+<body>
+    <div class="controlWrapper">
+        <button class="getImagesButton" id="이미지버튼">이미지 가져오기</button>
+    </div>
+    <div class="imageDisplayWrapper">
+        <img class="imageToDisplay" />
+    </div>
+
+    <script>
+        const getImagesButton = document.querySelector('#이미지버튼');
+        const imageToDisplay = document.querySelector('.imageToDisplay');
+
+        getImagesButton.addEventListener('click', async () => {
+            let randomImage = await getNewImage();
+            imageToDisplay.src = randomImage;
+        });
+
+        window.onload = function() {
+            getNewImage().then((randomImage) => {
+                imageToDisplay.src = randomImage;
+            });
+        };
+
+        async function getNewImage() {
+            return fetch('http://127.0.0.1:5000/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: 'london',
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    let allImages = data;
+                    console.log(allImages);
+                    return allImages.urls.regular;
+                });
+        }
+    </script>
+</body>
+
+</html>
